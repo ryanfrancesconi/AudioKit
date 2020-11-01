@@ -3,7 +3,6 @@
 /// Stereo Fader. Similar to AKBooster but with the addition of
 /// Automation support.
 public class AKFader: AKNode, AKToggleable, AKComponent, AKInput, AKAutomatable {
-
     public typealias AKAudioUnitType = InternalAU
 
     public static let ComponentDescription = AudioComponentDescription(effect: "fder")
@@ -77,18 +76,18 @@ public class AKFader: AKNode, AKToggleable, AKComponent, AKInput, AKAutomatable 
     // MARK: - Audio Unit
 
     public class InternalAU: AKAudioUnitBase {
-
-        public override func getParameterDefs() -> [AKNodeParameterDef] {
+        override public func getParameterDefs() -> [AKNodeParameterDef] {
             return [AKFader.leftGainDef,
                     AKFader.rightGainDef,
                     AKFader.flipStereoDef,
                     AKFader.mixToMonoDef]
         }
 
-        public override func createDSP() -> AKDSPRef {
+        override public func createDSP() -> AKDSPRef {
             return createFaderDSP()
         }
     }
+
     // MARK: - Initialization
 
     /// Initialize this fader node
@@ -115,10 +114,10 @@ public class AKFader: AKNode, AKToggleable, AKComponent, AKInput, AKAutomatable 
     }
 
     deinit {
-        AKLog("* { AKFader }")
+        // AKLog("* { AKFader }")
     }
 
-    public override func detach() {
+    override public func detach() {
         super.detach()
         parameterAutomation = nil
     }
