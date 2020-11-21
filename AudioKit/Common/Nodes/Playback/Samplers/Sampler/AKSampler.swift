@@ -271,7 +271,7 @@ public class AKSampler: AKPolyphonicNode, AKComponent {
 
     /// Initialize this sampler node. There are many parameters, change them after initialization
     ///
-    public init() {
+    override public init() {
         super.init(avAudioNode: AVAudioNode())
 
         instantiateAudioUnit { avAudioUnit in

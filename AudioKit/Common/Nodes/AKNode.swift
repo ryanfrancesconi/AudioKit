@@ -36,6 +36,10 @@ open class AKNode: NSObject {
         return self.avAudioUnit ?? self.avAudioNode
     }
 
+    public override init() {
+        avAudioNode = AVAudioNode()
+    }
+
     /// Initialize the node from an AVAudioUnit
     public init(avAudioUnit: AVAudioUnit, attach: Bool = false) {
         self.avAudioUnit = avAudioUnit
