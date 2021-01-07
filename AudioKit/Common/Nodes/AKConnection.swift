@@ -48,7 +48,6 @@ extension AKOutput {
 
     /// Add a connection to an input using the input's nextInput for the bus.
     @discardableResult public func connect(to node: AKInput) -> AKInput {
-        AKLog("AKSettings.audioFormat", AKSettings.audioFormat)
         return connect(to: node, bus: node.nextInput.bus)
     }
 
