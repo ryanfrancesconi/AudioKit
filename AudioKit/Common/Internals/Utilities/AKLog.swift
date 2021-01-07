@@ -16,6 +16,8 @@ extension OSLog {
 
     /// Log revolving around finding, reading, and writing files
     public static let fileHandling = OSLog(subsystem: subsystem, category: "fileHandling")
+
+    public static let debugLog = OSLog(subsystem: subsystem, category: "Debug")
 }
 
 /// Wrapper for  os_log logging system. It currently shows filename,  function, and line number,
@@ -32,7 +34,7 @@ extension OSLog {
 @inline(__always)
 public func AKLog(_ items: Any?...,
                   log: OSLog = OSLog.general,
-                  type: OSLogType = .info,
+                  type: OSLogType = .default,
                   file: String = #file,
                   function: String = #function,
                   line: Int = #line) {
@@ -45,5 +47,7 @@ public func AKLog(_ items: Any?...,
 
     let message = "\(fileName):\(function):\(line):\(content)"
 
-    os_log("%s (%s:%s:%d)", log: log, type: type, message, fileName, function, line)
+//    os_log("%s (%s:%s:%d)", log: log, type: type, message, fileName, function, line)
+
+    os_log("%{public}@", log: OSLog.debugLog, type: .default, message)
 }

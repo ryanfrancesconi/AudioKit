@@ -7,6 +7,9 @@
             didSet {
                 do {
                     try AVAudioSession.sharedInstance().setPreferredSampleRate(audioFormat.sampleRate)
+                    __akDefaultSampleRate = Float(audioFormat.sampleRate)
+                    __akDefaultChannelCount = Int32(audioFormat.channelCount)
+
                 } catch {
                     AKLog("Could not set preferred sample rate to \(sampleRate) " + error.localizedDescription,
                           log: OSLog.settings,
