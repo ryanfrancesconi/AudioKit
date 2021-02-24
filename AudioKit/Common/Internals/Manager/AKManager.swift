@@ -49,17 +49,17 @@ public class AKManager: NSObject {
     public static let midi = AKMIDI()
     #endif
 
-    static var finalMixer: AKMixer? {
-        didSet {
-            if let mixer = finalMixer {
-                for connection in internalConnections {
-                    connection >>> mixer
-                }
-                // Once the connections are made, we no longer need them.
-                internalConnections.removeAll()
-            }
-        }
-    }
+//    static var finalMixer: AKMixer? {
+//        didSet {
+//            if let mixer = finalMixer {
+//                for connection in internalConnections {
+//                    connection >>> mixer
+//                }
+//                // Once the connections are made, we no longer need them.
+//                internalConnections.removeAll()
+//            }
+//        }
+//    }
 
     /// internalConnections are used for not-strictly audio processing nodes that need
     /// a mechanism to pull samples (ie. the sequencer)
@@ -80,16 +80,17 @@ public class AKManager: NSObject {
 
             // if the assigned output is already a mixer, avoid creating an additional mixer and just use
             // that input as the finalMixer
-            if let mixerInput = output as? AKMixer {
-                finalMixer = mixerInput
-            } else {
-                // otherwise at this point create the finalMixer and add the input to it
-                let mixer = AKMixer()
-                output?.connect(to: mixer)
-                finalMixer = mixer
-            }
-            guard let finalMixer = finalMixer else { return }
-            engine.connect(finalMixer.avAudioNode, to: engine.outputNode, format: AKSettings.audioFormat)
+//            if output?.avAudioNode.isKind(of: AVAudioMixerNode.self) == true {
+//                finalMixer = output
+//
+//            } else {
+//                // otherwise at this point create the finalMixer and add the input to it
+//                let mixer = AKMixer()
+//                output?.connect(to: mixer)
+//                finalMixer = mixer
+//            }
+            guard let output = output else { return }
+            engine.connect(output.avAudioNode, to: engine.outputNode, format: AKSettings.audioFormat)
         }
     }
 
@@ -227,9 +228,9 @@ public class AKManager: NSObject {
     // MARK: - Disconnect node inputs
 
     /// Disconnect all inputs
-    public static func disconnectAllInputs() {
-        guard let finalMixer = finalMixer else { return }
-
-        engine.disconnectNodeInput(finalMixer.avAudioNode)
-    }
+//    public static func disconnectAllInputs() {
+//        guard let finalMixer = finalMixer else { return }
+//
+//        engine.disconnectNodeInput(finalMixer.avAudioNode)
+//    }
 }
