@@ -100,7 +100,7 @@ extern "C" void deleteDSP(AKDSPRef pDSP)
 
 AKDSPBase::AKDSPBase()
 : channelCount(2)   // best guess
-, sampleRate(44100) // best guess
+, sampleRate(48000) // best guess
 , inputBufferLists(1)
 , outputBufferLists(1)
 {

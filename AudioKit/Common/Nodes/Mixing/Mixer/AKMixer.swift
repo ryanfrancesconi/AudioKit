@@ -1,6 +1,6 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
-/// AudioKit version of Apple's Mixer Node. Mixes a varaiadic list of AKNodes.
+/// AudioKit version of Apple's Mixer Node. Mixes a variadic list of AKNodes.
 public class AKMixer: AKNode, AKToggleable, AKInput {
     /// The internal mixer node
     fileprivate var mixerAU = AVAudioMixerNode()
@@ -14,7 +14,7 @@ public class AKMixer: AKNode, AKToggleable, AKInput {
     }
 
     /// Output Pan (Default 0 = center)
-    public var pan: AUValue = 1.0 {
+    public var pan: AUValue = 0 {
         didSet {
             pan = min(pan, 1)
             pan = max(pan, -1)

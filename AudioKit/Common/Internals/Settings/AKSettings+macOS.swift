@@ -3,7 +3,12 @@
 #if os(macOS)
     extension AKSettings {
         /// Global audio format AudioKit will default to for new objects and connections
-        public static var audioFormat = defaultAudioFormat
+        public static var audioFormat = defaultAudioFormat {
+            didSet {
+                __akDefaultSampleRate = Float(audioFormat.sampleRate)
+                __akDefaultChannelCount = Int32(audioFormat.channelCount)
+            }
+        }
 
         /// The hardware ioBufferDuration. Setting this will request the new value, getting
         /// will query the hardware.

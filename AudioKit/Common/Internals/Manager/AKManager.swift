@@ -19,7 +19,7 @@ public class AKManager: NSObject {
     #if !os(macOS)
     public static let deviceSampleRate = AVAudioSession.sharedInstance().sampleRate
     #else
-    public static let deviceSampleRate: Double = 44_100
+    public static let deviceSampleRate: Double = 48_000
     #endif
 
     // MARK: - Internal audio engine mechanics
@@ -98,7 +98,7 @@ public class AKManager: NSObject {
     /// Enumerate the list of available devices.
     public static var devices: [AKDevice]? {
         return AudioDeviceUtils.devices().map { id in
-            return AKDevice(deviceID: id)
+            AKDevice(deviceID: id)
         }
     }
     #endif

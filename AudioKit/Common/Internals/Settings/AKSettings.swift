@@ -52,7 +52,7 @@ public class AKSettings: NSObject {
         case sCurve = 3
     }
 
-    public static let defaultAudioFormat = AVAudioFormat(standardFormatWithSampleRate: 44_100,
+    public static let defaultAudioFormat = AVAudioFormat(standardFormatWithSampleRate: 48_000,
                                                                channels: 2) ?? AVAudioFormat()
 
     /// The sample rate in Hertz, default is 44100 kHz. Set a new audioFormat if you want to change this value.
@@ -64,7 +64,6 @@ public class AKSettings: NSObject {
         set {
             audioFormat = AVAudioFormat(standardFormatWithSampleRate: newValue,
                                         channels: audioFormat.channelCount) ?? AVAudioFormat()
-            __akDefaultSampleRate = Float(sampleRate)
         }
     }
 
@@ -76,7 +75,6 @@ public class AKSettings: NSObject {
         set {
             audioFormat = AVAudioFormat(standardFormatWithSampleRate: audioFormat.sampleRate,
                                         channels: newValue) ?? AVAudioFormat()
-            __akDefaultChannelCount = Int32(channelCount)
         }
     }
 

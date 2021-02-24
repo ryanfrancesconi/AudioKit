@@ -18,7 +18,9 @@ extension AKManager {
     // bus to connect to.
     //
     private static func checkMixerInputs(_ connectionPoints: [AVAudioConnectionPoint]) {
-        if !engine.isRunning { return }
+        //if #available(macOS 10.15, *) {
+            if !engine.isRunning { return }
+        //}
 
         for connection in connectionPoints {
             if let mixer = connection.node as? AVAudioMixerNode,
@@ -28,6 +30,8 @@ extension AKManager {
                     let dummyNode = AVAudioUnitSampler()
                     dummyNode.setOutput(to: mixer)
                     dummyNodes.append(dummyNode)
+
+                    AKLog("AK🚩 Added checkMixerInput to mixer with format", AKSettings.audioFormat)
                 }
                 for dummyNode in dummyNodes {
                     dummyNode.disconnectOutput()
@@ -51,6 +55,8 @@ extension AKManager {
         let dummy = AVAudioUnitSampler()
         engine.attach(dummy)
         engine.connect(dummy, to: mixer, format: AKSettings.audioFormat)
+
+        AKLog("🚩 Added dummy to mixer")
         return dummy
     }
 
@@ -58,6 +64,9 @@ extension AKManager {
                                to destNodes: [AVAudioConnectionPoint],
                                fromBus sourceBus: AVAudioNodeBus,
                                format: AVAudioFormat?) {
+
+        let format = format ?? AKSettings.audioFormat
+
         let connectionsWithNodes = destNodes.filter { $0.node != nil }
         safeAttach([sourceNode] + connectionsWithNodes.compactMap { $0.node })
         // See addDummyOnEmptyMixer for dummyNode explanation.

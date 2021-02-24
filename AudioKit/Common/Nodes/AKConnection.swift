@@ -1,11 +1,10 @@
 // Copyright AudioKit. All Rights Reserved. Revision History at http://github.com/AudioKit/AudioKit/
 
-import Foundation
 import AVFoundation
+import Foundation
 
 /// A transitory used to pass connection information.
 open class AKInputConnection: NSObject {
-
     open var node: AKInput
     open var bus: Int
     public init(node: AKInput, bus: Int) {
@@ -13,24 +12,27 @@ open class AKInputConnection: NSObject {
         self.bus = bus
         super.init()
     }
+
     open var avConnection: AVAudioConnectionPoint {
-        return AVAudioConnectionPoint(node: self.node.inputNode, bus: bus)
+        return AVAudioConnectionPoint(node: node.inputNode, bus: bus)
     }
 }
 
 /// Simplify making connections from a node.
 public protocol AKOutput: AnyObject {
-
     /// The output of this node can be connected to the inputNode of an AKInput.
     var outputNode: AVAudioNode { get }
 }
 
 extension AKOutput {
-
     /// Output connection points of outputNode.
     public var connectionPoints: [AVAudioConnectionPoint] {
-        get { return outputNode.engine?.outputConnectionPoints(for: outputNode, outputBus: 0) ?? [] }
-        set { AKManager.connect(outputNode, to: newValue, fromBus: 0, format: AKSettings.audioFormat) }
+        get {
+            outputNode.engine?.outputConnectionPoints(for: outputNode, outputBus: 0) ?? []
+        }
+        set {
+            AKManager.connect(outputNode, to: newValue, fromBus: 0, format: AKSettings.audioFormat)
+        }
     }
 
     /// Disconnects all outputNode's output connections.
@@ -46,6 +48,7 @@ extension AKOutput {
 
     /// Add a connection to an input using the input's nextInput for the bus.
     @discardableResult public func connect(to node: AKInput) -> AKInput {
+        AKLog("AKSettings.audioFormat", AKSettings.audioFormat)
         return connect(to: node, bus: node.nextInput.bus)
     }
 
@@ -138,12 +141,10 @@ extension AKOutput {
     public func setOutput(to connectionPoints: [AVAudioConnectionPoint], format: AVAudioFormat?) {
         AKManager.connect(outputNode, to: connectionPoints, fromBus: 0, format: format)
     }
-
 }
 
 /// Manages connections to inputNode.
 public protocol AKInput: AKOutput {
-
     /// The node that an output's node can connect to.  Default implementation will return outputNode.
     var inputNode: AVAudioNode { get }
 
@@ -168,23 +169,25 @@ extension AKInput {
     public var inputNode: AVAudioNode {
         return outputNode
     }
+
     public func disconnectInput() {
         AKManager.engine.disconnectNodeInput(inputNode)
     }
-    public func disconnectInput(bus: Int) {
-        AKManager.engine.disconnectNodeInput(inputNode, bus: bus )
-    }
-    public var nextInput: AKInputConnection {
 
+    public func disconnectInput(bus: Int) {
+        AKManager.engine.disconnectNodeInput(inputNode, bus: bus)
+    }
+
+    public var nextInput: AKInputConnection {
         if let mixer = inputNode as? AVAudioMixerNode {
             return input(mixer.nextAvailableInputBus)
         }
         return input(0)
     }
+
     public func input(_ bus: Int) -> AKInputConnection {
         return AKInputConnection(node: self, bus: bus)
     }
-
 }
 
 extension AVAudioNode: AKInput {
@@ -199,21 +202,26 @@ infix operator >>>: AdditionPrecedence
 @discardableResult public func >>> (left: AKOutput, right: AKInput) -> AKInput {
     return left.connect(to: right)
 }
+
 @discardableResult public func >>> (left: AKOutput, right: [AKInput]) -> [AKInput] {
     return left.connect(to: right)
 }
+
 @discardableResult public func >>> (left: [AKOutput], right: AKInput) -> AKInput {
     for node in left {
         node.connect(to: right)
     }
     return right
 }
+
 @discardableResult public func >>> (left: AKOutput, right: AKInputConnection) -> AKInput {
     return left.connect(to: right.node, bus: right.bus)
 }
+
 @discardableResult public func >>> (left: AKOutput, right: [AKInputConnection]) -> [AKInput] {
     return left.connect(toInputs: right)
 }
+
 public func >>> (left: AKOutput, right: AVAudioConnectionPoint) {
     return left.connect(to: right)
 }
