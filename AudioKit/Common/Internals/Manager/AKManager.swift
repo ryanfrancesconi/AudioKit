@@ -81,8 +81,8 @@ public class AKManager: NSObject {
 //                output?.connect(to: mixer)
 //                finalMixer = mixer
 //            }
-            guard let output = output else { return }
-            engine.connect(output.avAudioNode, to: engine.outputNode, format: AKSettings.audioFormat)
+//            guard let output = output else { return }
+//            engine.connect(output.avAudioNode, to: engine.outputNode, format: AKSettings.audioFormat)
         }
     }
 
