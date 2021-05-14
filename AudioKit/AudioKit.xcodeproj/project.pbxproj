@@ -5784,7 +5784,6 @@
 		C42F356C1C057F4C000E937C /* Effects */ = {
 			isa = PBXGroup;
 			children = (
-				C44EA283201873DB0072399F /* README.md */,
 				C45380441C3A59EA00A51738 /* AudioKit Operation-Based Effect */,
 				C46302AC1C20E838009B44D9 /* Delay */,
 				C48AA67F1C0FA6C5006EB131 /* Distortion */,
@@ -5794,6 +5793,7 @@
 				52145B101F3C58F20069C88B /* Guitar Processors */,
 				C44EA23E2018704D0072399F /* Modulation */,
 				C46809681CEECB6900ADFC05 /* Pitch Shifter */,
+				C44EA283201873DB0072399F /* README.md */,
 				C46302B81C20E846009B44D9 /* Reverb */,
 			);
 			path = Effects;

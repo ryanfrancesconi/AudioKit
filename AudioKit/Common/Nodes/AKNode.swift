@@ -57,7 +57,7 @@ open class AKNode: NSObject {
     }
 
     deinit {
-        //detach()
+        detach()
     }
 
     /// Subclasses should override to detach all internal nodes
