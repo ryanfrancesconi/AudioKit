@@ -8,7 +8,6 @@ extension AVAudioConnectionPoint {
 
 /// Parent class for all nodes in AudioKit
 open class AKNode: NSObject {
-
     /// The internal AVAudioEngine AVAudioNode
     open var avAudioNode: AVAudioNode
 
@@ -33,17 +32,17 @@ open class AKNode: NSObject {
 
     /// Returns either the avAudioUnit or avAudioNode (prefers the avAudioUnit if it exists)
     open var avAudioUnitOrNode: AVAudioNode {
-        return self.avAudioUnit ?? self.avAudioNode
+        return avAudioUnit ?? avAudioNode
     }
 
-    public override init() {
+    override public init() {
         avAudioNode = AVAudioNode()
     }
 
     /// Initialize the node from an AVAudioUnit
     public init(avAudioUnit: AVAudioUnit, attach: Bool = false) {
         self.avAudioUnit = avAudioUnit
-        self.avAudioNode = avAudioUnit
+        avAudioNode = avAudioUnit
         if attach {
             AKManager.engine.attach(avAudioUnit)
         }
@@ -69,7 +68,7 @@ open class AKNode: NSObject {
 
 extension AKNode: AKOutput {
     public var outputNode: AVAudioNode {
-        return self.avAudioUnitOrNode
+        return avAudioUnitOrNode
     }
 }
 
@@ -130,7 +129,7 @@ public protocol AKPolyphonic {
 
         // default implementation is 12 ET
         let frequency = AKPolyphonicNode.tuningTable.frequency(forNoteNumber: noteNumber)
-        self.play(noteNumber: noteNumber, velocity: velocity, frequency: AUValue(frequency), channel: channel)
+        play(noteNumber: noteNumber, velocity: velocity, frequency: AUValue(frequency), channel: channel)
     }
 
     /// Stop a sound corresponding to a MIDI note
@@ -183,7 +182,6 @@ public extension AKToggleable {
 }
 
 public extension AKToggleable where Self: AKComponent {
-
     var isStarted: Bool {
         return (internalAU as? AKAudioUnitBase)?.isStarted ?? false
     }

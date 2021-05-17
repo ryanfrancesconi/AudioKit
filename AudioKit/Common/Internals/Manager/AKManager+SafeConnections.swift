@@ -18,13 +18,13 @@ extension AKManager {
     // bus to connect to.
     //
     private static func checkMixerInputs(_ connectionPoints: [AVAudioConnectionPoint]) {
-        //if #available(macOS 10.15, *) {
-            if !engine.isRunning { return }
-        //}
+        // if #available(macOS 10.15, *) {
+        if !engine.isRunning { return }
+        // }
 
         for connection in connectionPoints {
             if let mixer = connection.node as? AVAudioMixerNode,
-                connection.bus >= mixer.numberOfInputs {
+               connection.bus >= mixer.numberOfInputs {
                 var dummyNodes = [AVAudioNode]()
                 while connection.bus >= mixer.numberOfInputs {
                     let dummyNode = AVAudioUnitSampler()
@@ -47,8 +47,8 @@ extension AKManager {
     private static func addDummyOnEmptyMixer(_ node: AVAudioNode) -> AVAudioNode? {
         // Only an issue if engine is running, node is a mixer, and mixer has no inputs
         guard let mixer = node as? AVAudioMixerNode,
-            engine.isRunning,
-            !engine.mixerHasInputs(mixer: mixer) else {
+              engine.isRunning,
+              !engine.mixerHasInputs(mixer: mixer) else {
             return nil
         }
 
@@ -64,7 +64,6 @@ extension AKManager {
                                to destNodes: [AVAudioConnectionPoint],
                                fromBus sourceBus: AVAudioNodeBus,
                                format: AVAudioFormat?) {
-
         let format = format ?? AKSettings.audioFormat
 
         let connectionsWithNodes = destNodes.filter { $0.node != nil }
@@ -95,7 +94,7 @@ extension AKManager {
     // Convenience
     public static func detach(nodes: [AVAudioNode]) {
         for node in nodes {
-            guard node.engine != nil else { continue }
+            guard node.engine != nil && node.engine == engine else { continue }
             engine.detach(node)
         }
     }
@@ -113,11 +112,10 @@ extension AKManager {
     ///
     @available(iOS 11, macOS 10.13, tvOS 11, *)
     public static func renderToFile(_ audioFile: AVAudioFile,
-                                    maximumFrameCount: AVAudioFrameCount = 4_096,
+                                    maximumFrameCount: AVAudioFrameCount = 4096,
                                     duration: Double,
                                     prerender: (() -> Void)? = nil,
                                     progress: ((Double) -> Void)? = nil) throws {
-
         try engine.renderToFile(audioFile,
                                 maximumFrameCount: maximumFrameCount,
                                 duration: duration,
