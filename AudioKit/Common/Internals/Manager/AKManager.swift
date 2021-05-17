@@ -37,6 +37,9 @@ public class AKManager: NSObject {
             return _engine
         }
         set {
+            if _engine.isRunning {
+                _engine.stop()
+            }
             _engine = newValue
         }
     }
