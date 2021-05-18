@@ -90,6 +90,10 @@ public class AKFader: AKNode, AKToggleable, AKComponent, AKInput, AKAutomatable 
 
     // MARK: - Initialization
 
+    convenience override init() {
+        self.init(nil, gain: 1)
+    }
+
     /// Initialize this fader node
     ///
     /// - Parameters:
