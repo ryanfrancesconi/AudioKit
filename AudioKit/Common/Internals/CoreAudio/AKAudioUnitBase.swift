@@ -102,7 +102,6 @@ open class AKAudioUnitBase: AUAudioUnit {
 
         // create audio bus connection points
         let format = AKSettings.audioFormat
-        AKLog("Creating busses of format", format)
 
         for _ in 0..<inputBusCountDSP(dsp) {
             inputBusArray.append(try AUAudioUnitBus(format: format))
